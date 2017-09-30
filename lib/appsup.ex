@@ -2,8 +2,8 @@ defmodule AppSup do
     use Supervisor
     
     def start_link(args) do
-    result = {:ok, sup } = Supervisor.start_link(__MODULE__, [initial_number])
-    start_workers(sup, initial_number)
+    result = {:ok, sup } = Supervisor.start_link(__MODULE__, args)
+    start_workers(sup, args)
     result
     end
     

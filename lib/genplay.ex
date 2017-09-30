@@ -1,12 +1,13 @@
 defmodule Genplay do
 use GenServer
 
-  def start_link([top,n,i]) do
+  def start_link(top,n,i) do
     myname = cond do
       (top=="line")||(top=="full") -> String.to_atom("node#{i}")
       true -> String.to_atom("node#{i}#{i}")
     end
-    GenServer.start_link(__MODULE__, {top,n,i,0} )
+    {:ok, pid} = GenServer.start_link(__MODULE__, {top,n,i,0}, name: myname )
+    pid
   end
 
   

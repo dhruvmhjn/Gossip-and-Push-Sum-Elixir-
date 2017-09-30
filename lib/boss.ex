@@ -11,7 +11,7 @@ defmodule Boss do
         AppSup.start_link([numNodes,topology,algorithm])
         #kregex = ~r/^\d{1,2}$/
         
-        boss_receiver(argumentstr)
+        boss_receiver("string")
     end
             
     def boss_receiver(k) do

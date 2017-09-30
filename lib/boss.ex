@@ -1,12 +1,15 @@
-defmodule AppSup do
+import Supervisor.Spec 
+defmodule Boss do
     #@name "dnode@192.168.0.13"
     def main(args) do 
         parse_args(args,@name)
     end
     defp parse_args(args,temp_asnode) do
         cmdarg = OptionParser.parse(args)
-        IO.inspect cmdarg 
-        {[],[a,b,c],[]} = cmdarg
+        #IO.inspect cmdarg 
+        {[],[numNodes,topology,algorithm],[]} = cmdarg
+        AppSup.start_link([numNodes,topology,algorithm])
+
         #kregex = ~r/^\d{1,2}$/
         #ipregex = ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
 

@@ -6,9 +6,9 @@ defmodule AppSup do
     defp parse_args(args,temp_asnode) do
         cmdarg = OptionParser.parse(args)
         IO.inspect cmdarg 
-        {[],[argumentstr],[]} = cmdarg
-        kregex = ~r/^\d{1,2}$/
-        ipregex = ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+        {[],[a,b,c],[]} = cmdarg
+        #kregex = ~r/^\d{1,2}$/
+        #ipregex = ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
 
     end
 end

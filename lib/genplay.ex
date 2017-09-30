@@ -1,8 +1,12 @@
 defmodule Genplay do
 use GenServer
 
-  def start_link(top, n, i) do
-    GenServer.start_link(__MODULE__, {top,n,i}, name: String.to_atom("node#{i}"))
+  def start_link(top, n, i,j) do
+    myname = cond do
+      (top=="line")||(top=="full") -> String.to_atom("node#{i}")
+      true -> String.to_atom("node#{i}#{j}")
+    end
+    GenServer.start_link(__MODULE__, {top,n,i,j}, name: myname )
   end
 
   
@@ -16,13 +20,19 @@ use GenServer
         end
   end
 
-  def init({top,n,i}) do
+  def init({top,n,i,j}) do
+        sqn= :math.sqrt(n)
         list = cond do
-            
-        (i==1) -> {2}
-        (i==n) -> {n}
-        
-        true ->  {i-1,i+1}
+        (top=="full") -> {0}  
+        (top=="line")&&(i==1) -> {2}
+        (top=="line")&&(i==n) -> {n}
+        (top=="line")  -> {i-1,i+1}
+        (i==1)&&(j==1) -> {12,21}
+        (i==1)&&(j==sqn) -> {Integer.undigits([1,(j-1)]), Integer.undigits([2,j])}
+        (i==sqn)&&(j==1) -> {Integer.undigits([i,2]), Integer.undigits([(n-1),j])}
+        (i==sqn)&&(j==sqn) -> {Integer.undigits([(i-1),j]), Integer.undigits([i,(j-1)])}
+        (top=="2D")    -> {Integer.undigits([(i-1),j]), Integer.undigits([(i+1),j]), Integer.undigits([i,(j-1)]),Integer.undigits([i,(j+1)])}
+        true ->  {}
         end
     
 

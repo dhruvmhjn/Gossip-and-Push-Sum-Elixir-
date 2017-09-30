@@ -8,7 +8,7 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
-        AppSup.start_link([numNodes,topology,algorithm])
+        #AppSup.start_link([numNodes,topology,algorithm])
 
         #kregex = ~r/^\d{1,2}$/
         #ipregex = ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/

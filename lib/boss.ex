@@ -8,11 +8,21 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
-        #AppSup.start_link([numNodes,topology,algorithm])
-
+        AppSup.start_link([numNodes,topology,algorithm])
         #kregex = ~r/^\d{1,2}$/
-        #ipregex = ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
-
+        
+        boss_receiver(argumentstr)
+    end
+            
+    def boss_receiver(k) do
+        receive do
+            {:hello, cpid} ->
+                send cpid, {:k_valmsg, k}
+            {:EXIT, pid, reason} ->
+                :timer.sleep(500)
+                IO.puts "Child process #{inspect(pid)} exits with reasson #{reason}" 
+        end
+        boss_receiver(k)
     end
 end
         

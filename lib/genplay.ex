@@ -2,6 +2,7 @@ defmodule Genplay do
 use GenServer
 
   def start_link(top,n,i) do
+    IO.puts "abc in genplay"
     myname = cond do
       (top=="line")||(top=="full") -> String.to_atom("node#{i}")
       true -> String.to_atom("node#{i}#{i}")

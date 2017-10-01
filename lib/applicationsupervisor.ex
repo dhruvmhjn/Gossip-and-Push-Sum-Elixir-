@@ -1,4 +1,4 @@
-defmodule AppSupervisor do
+defmodule ApplicationSupervisor do
     use Supervisor
     def start_link(args) do
         result = {:ok, sup } = Supervisor.start_link(__MODULE__,args)

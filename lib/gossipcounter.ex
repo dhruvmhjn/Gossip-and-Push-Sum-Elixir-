@@ -1,4 +1,4 @@
-defmodule GCounter do
+defmodule GossipCounter do
     use GenServer
     def start_link(numnodes) do
         IO.puts "abc in gcounter"

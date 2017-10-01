@@ -8,7 +8,7 @@ defmodule GCounter do
     end
     
     def init({numnodes}) do
-    {:ok,{0,numnodes}}
+        {:ok,{0,numnodes}}
     end
 
     def handle_cast(:count,_from,count)do

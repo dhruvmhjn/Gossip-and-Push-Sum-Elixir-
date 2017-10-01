@@ -7,7 +7,7 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
-        AppSup.start_link([numNodes,topology,algorithm])
+        AppSupervisor.start_link([numNodes,topology,algorithm])
         #kregex = ~r/^\d{1,2}$/    
         boss_receiver("string")
     end

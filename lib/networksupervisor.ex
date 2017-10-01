@@ -1,4 +1,4 @@
-defmodule Genplaysup do
+defmodule NetworkSupervisor do
     use Supervisor
     def start_link(n,top,protocol,gcpid) do
         {:ok,_pid}= Supervisor.start_link(__MODULE__,{n,top,protocol,gcpid},[])

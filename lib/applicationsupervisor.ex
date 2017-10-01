@@ -1,4 +1,4 @@
-defmodule AppSup do
+defmodule AppSupervisor do
     use Supervisor
     def start_link(args) do
         result = {:ok, sup } = Supervisor.start_link(__MODULE__,args)
@@ -10,7 +10,7 @@ defmodule AppSup do
     
         {:ok, gcpid} = Supervisor.start_child(sup, worker(GCounter, [numNodes]))
          #IO.inspect gcpid        
-        Supervisor.start_child(sup, supervisor(Genplaysup, [numNodes,topology,algorithm,gcpid]))
+        Supervisor.start_child(sup, supervisor(NetworkSupervisor, [numNodes,topology,algorithm,gcpid]))
     
     end
     

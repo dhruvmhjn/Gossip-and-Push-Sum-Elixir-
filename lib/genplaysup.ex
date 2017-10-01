@@ -1,11 +1,13 @@
 defmodule Genplaysup do
     use Supervisor
-    def start_link(top,n,protocol) do
-        {:ok,_pid}= Supervisor.start_link(__MODULE__,{top,n,protocol},[])
+    def start_link(n,top,protocol,gcpid) do
+        {:ok,_pid}= Supervisor.start_link(__MODULE__,{n,top,protocol,gcpid},[])
 
     end
-    def init({top,n,protocol}) do 
-        n_miners = Enum.to_list 1..n
+    def init({n,top,protocol,gcpid}) do
+        numnodes = String.to_integer(n) 
+        n_miners = Enum.to_list 1..numnodes
+        IO.inspect n_miners
         children = Enum.map(n_miners, fn(x)->worker(Genplay, [top,n,x], [id: "node#{x}"]) end)
         IO.puts "this is in supervisior"
         supervise children, strategy: :one_for_one

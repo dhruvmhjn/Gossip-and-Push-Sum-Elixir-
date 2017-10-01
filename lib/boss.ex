@@ -8,10 +8,9 @@ defmodule Boss do
         #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
-        
         if topology == "2D" || topology =="imp2D" do
             numInt = round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
-            IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes."
+            IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
         end
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])

@@ -8,7 +8,7 @@ defmodule Genplaysup do
         # nodes = Enum.map(1..n, fn(i) -> Genplay.start_link(top,n,i) end)
         IO.inspect self
         n_miners = Enum.to_list 1..n
-        children = Enum.map(n_miners, fn(x)->worker(Genplay, [], [name: "node#{x}"]) end)
+        children = Enum.map(n_miners, fn(x)->worker(Genplay, [top,n,x], [id: "node#{x}"]) end)
         IO.puts inspect children
         abc = Supervisor.start_child(children, strategy: :simple_one_for_one)
         #IO.puts inspect(abc)

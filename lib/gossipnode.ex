@@ -6,12 +6,12 @@ defmodule GossipNode do
     sqn=round(:math.sqrt(n))
     i = div((x-1),sqn) + 1
     j = rem((x-1),sqn) + 1 
-    {:ok, pid} = cond do
+    return = {:ok,_pid} = cond do
       (top=="line")||(top=="full") ->  GenServer.start_link(__MODULE__, {top,n,x,0}, name: String.to_atom("node#{x}"))
       true ->  GenServer.start_link(__MODULE__, {top,n,i,j}, name: String.to_atom("node#{i}#{j}"))
     end
   # {:ok, pid} = GenServer.start_link(__MODULE__, {top,n,i,0}, name: myname )
-  {:ok, pid}
+  return
   end
 
   def hear_rumour do

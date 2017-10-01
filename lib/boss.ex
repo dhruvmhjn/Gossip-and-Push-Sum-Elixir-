@@ -8,8 +8,7 @@ defmodule Boss do
         #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         AppSup.start_link([numNodes,topology,algorithm])
-        #kregex = ~r/^\d{1,2}$/
-        
+        #kregex = ~r/^\d{1,2}$/    
         boss_receiver("string")
     end
             

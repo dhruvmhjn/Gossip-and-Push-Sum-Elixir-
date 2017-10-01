@@ -6,12 +6,12 @@ defmodule GossipNode do
     sqn=round(:math.sqrt(n))
     i = div((x-1),sqn) + 1
     j = rem((x-1),sqn) + 1 
-    return = {:ok,_pid} = cond do
-      (top=="line")||(top=="full") ->  GenServer.start_link(__MODULE__, {top,n,x,0}, name: String.to_atom("node#{x}"))
-      true ->  GenServer.start_link(__MODULE__, {top,n,i,j}, name: String.to_atom("node#{i}#{j}"))
+    returnok = {:ok,_pid} = cond do
+      (top == "line")||(top == "full") ->  GenServer.start_link(__MODULE__, {top,n,x,0}, name: String.to_atom("node#{x}"))
+      (top == "2D") || (top == "imp2D") ->  GenServer.start_link(__MODULE__, {top,n,i,j}, name: String.to_atom("node#{i}#{j}"))
     end
   # {:ok, pid} = GenServer.start_link(__MODULE__, {top,n,i,0}, name: myname )
-  return
+  returnok
   end
 
   def hear_rumour do
@@ -27,18 +27,22 @@ defmodule GossipNode do
   def init({top,n,i,j}) do
     sqn= :math.sqrt(n)
     list = cond do
-      (top=="full") -> {0}  
-      (top=="line")&&(i==1) -> {2}
-      (top=="line")&&(i==n) -> {n}
-      (top=="line")  -> {i-1,i+1}
-      (i==sqn)&&(j==1) -> {12,21}
-      (j==1) ->  {Integer.undigits([i,(j+1)]), Integer.undigits([i+1,j])}
-      (i==1)&&(j==sqn) -> {Integer.undigits([1,(j-1)]), Integer.undigits([2,j])}
-      (i==sqn)&&(j==1) -> {Integer.undigits([i,2]), Integer.undigits([(n-1),j])}
-      (i==sqn)&&(j==sqn) -> {Integer.undigits([(i-1),j]), Integer.undigits([i,(j-1)])}
-      (top=="2D")    -> {Integer.undigits([(i-1),j]), Integer.undigits([(i+1),j]), Integer.undigits([i,(j-1)]),Integer.undigits([i,(j+1)])}
-      true ->  {}
+      (top=="full") -> [0]  
+      (top=="line")&&(i==1) -> [2]
+      (top=="line")&&(i==n) -> [n-1]
+      (top=="line")  -> [i-1,i+1]
+      (i != 1)&&(i != sqn)&&(j != 1)&&(j != sqn) -> [Integer.undigits([i,(j+1)]), Integer.undigits([i+1,j]),Integer.undigits([i,(j-1)]), Integer.undigits([i-1,j])]
+      (i==1)&&(j==1) -> [12,21]
+      (i==sqn)&&(j==1) -> [Integer.undigits([i-1,j]), Integer.undigits([i,j+1])]
+      (i==1)&&(j==sqn) -> [Integer.undigits([i,j-1]), Integer.undigits([i+1,j])]      
+      (i==sqn)&&(j==sqn) -> [Integer.undigits([(i-1),j]), Integer.undigits([i,(j-1)])]
+      (j==1) ->  [Integer.undigits([i+1,j]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])]
+      (j==sqn) ->  [Integer.undigits([i+1,j]), Integer.undigits([i,j-1]), Integer.undigits([i-1,j])]
+      (i==1) ->  [Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i+1,j])]
+      (i==sqn) ->  [Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])]
+      true ->  []
     end
+    IO.puts "i=#{i} j=#{j} list=#{inspect(list)}"
     {:ok,{n,list}}
   end
  

@@ -17,9 +17,6 @@ defmodule Boss do
         receive do
             {:hello, cpid} ->
                 send cpid, {:k_valmsg, k}
-            #{:EXIT, pid, reason} ->
-                #:timer.sleep(500)
-                #IO.puts "Child process #{inspect(pid)} exits with reasson #{reason}" 
         end
         boss_receiver(k)
     end

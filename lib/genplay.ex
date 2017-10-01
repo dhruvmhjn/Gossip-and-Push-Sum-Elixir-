@@ -7,7 +7,7 @@ use GenServer
       true -> String.to_atom("node#{i}#{i}")
     end
     {:ok, pid} = GenServer.start_link(__MODULE__, {top,n,i,0}, name: myname )
-    pid
+    {:ok, pid}
   end
 
   

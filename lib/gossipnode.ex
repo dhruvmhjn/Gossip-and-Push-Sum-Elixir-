@@ -40,7 +40,7 @@ defmodule GossipNode do
       (j == sqn) ->  {Integer.undigits([i+1,j]), Integer.undigits([i,j-1]), Integer.undigits([i-1,j])}
       (i == 1) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i+1,j])}
       (i == sqn) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
-      true ->  []
+      true ->  {}
     end
     IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
     {:ok,{n,list}}

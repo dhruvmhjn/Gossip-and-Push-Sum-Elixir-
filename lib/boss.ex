@@ -6,7 +6,7 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
-
+        IO.puts "#{inspect(self)}"
         Process.register(self(),:boss)
         
         #Code to Round OFF
@@ -38,7 +38,7 @@ defmodule Boss do
         receive do
             {:hello, cpid} ->
                 send cpid, {:k_valmsg, k}
-            {:topology_created, _} ->
+            {:topology_created} ->
                 IO.puts "boss gets the signal"
                 rstring = "This is the first rumour"
                 if topology == "line" || topology =="full" do

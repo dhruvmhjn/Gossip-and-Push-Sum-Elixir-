@@ -43,10 +43,10 @@ defmodule GossipNode do
       true ->  {}
     end
    #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
-    {:ok,{n,list,0}}
+    {:ok,{n,list,0,top}}
   end
  
-  def handle_cast({:rumour,rsrting},{n,list,localcount})do
+  def handle_cast({:rumour,rsrting},{n,list,localcount,top})do
     localcount = localcount + 1
     if localcount == 1 do
       GenServer.cast(:gcounter, :heardrumour)
@@ -57,8 +57,10 @@ defmodule GossipNode do
     {:noreply,{n,list,localcount}}
   end
   
-  def handle_cast({:spreadrumour,rsrting},{n,list,localcount})do
+  def handle_cast({:spreadrumour,rsrting},{n,list,localcount,full})do
     #Random neighbour call
+    #Code For fukk
+    
     #GenServer.cast()
     :timer.sleep(1000)
 

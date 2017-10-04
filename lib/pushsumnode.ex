@@ -36,7 +36,7 @@ defmodule PushsumNode do
           randj = :rand.uniform(sqn)
           list = list ++ [String.to_atom("node#{randi}@#{randj}")]
         end
-       
-        {:ok,{n,list,0,x,1}}
+       # state: num modes, list of neighbours, last s/w,counter,s,w
+        {:ok,{n,list,nil,0,x,1}}
     end
 end

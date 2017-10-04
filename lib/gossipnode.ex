@@ -25,20 +25,20 @@ defmodule GossipNode do
   def init({top,n,i,j}) do
     sqn= round(:math.sqrt(n))
     list = cond do
-      (top == "full") -> {0}  
-      (top == "line") && (i == 1) -> {2}
-      (top == "line") && (i == n) -> {n-1}
-      (top == "line")  -> {i-1,i+1}
-      (i != 1) && (i != sqn) && (j != 1) && (j != sqn) -> {Integer.undigits([i,(j+1)]), Integer.undigits([i+1,j]),Integer.undigits([i,(j-1)]), Integer.undigits([i-1,j])}
-      (i == 1) && (j == 1) -> {12,21}
-      (i == sqn) && (j == 1) -> {Integer.undigits([i-1,j]), Integer.undigits([i,j+1])}
-      (i == 1) && (j == sqn) -> {Integer.undigits([i,j-1]), Integer.undigits([i+1,j])}      
-      (i == sqn) && (j == sqn) -> {Integer.undigits([(i-1),j]), Integer.undigits([i,(j-1)])}
-      (j == 1) ->  {Integer.undigits([i+1,j]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
-      (j == sqn) ->  {Integer.undigits([i+1,j]), Integer.undigits([i,j-1]), Integer.undigits([i-1,j])}
-      (i == 1) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i+1,j])}
-      (i == sqn) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
-      true ->  {}
+      (top == "full") -> []  
+      (top == "line") && (i == 1) -> [:node2]
+      (top == "line") && (i == n) -> [String.to_atom("node#{n-1}")]
+      (top == "line")  -> [String.to_atom("node#{i-1}"),String.to_atom("node#{i+1}")]
+      (i != 1) && (i != sqn) && (j != 1) && (j != sqn) -> [String.to_atom("node#{i}#{j+1}"),String.to_atom("node#{i+1}#{j}"),String.to_atom("node#{i}#{j-1}"),String.to_atom("node#{i-1}#{j}")]
+      (i == 1) && (j == 1) -> [:node21,:node12]
+      (i == sqn) && (j == 1) -> [String.to_atom("node#{i-1}#{j}"),String.to_atom("node#{i}#{j+1}")] #{Integer.undigits([i-1,j]), Integer.undigits([i,j+1])}
+      (i == 1) && (j == sqn) -> [String.to_atom("node#{i+1}#{j}"),String.to_atom("node#{i}#{j-1}")] #{Integer.undigits([i,j-1]), Integer.undigits([i+1,j])}      
+      (i == sqn) && (j == sqn) -> [String.to_atom("node#{i-1}#{j}"),String.to_atom("node#{i}#{j-1}")] #{Integer.undigits([(i-1),j]), Integer.undigits([i,(j-1)])}
+      (j == 1) ->[String.to_atom("node#{i-1}#{j}"),String.to_atom("node#{i+1}#{j}"),String.to_atom("node#{i}#{j+1}")]  #{Integer.undigits([i+1,j]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
+      (j == sqn) ->  [String.to_atom("node#{i-1}#{j}"),String.to_atom("node#{i+1}#{j}"),String.to_atom("node#{i}#{j-1}")]#{Integer.undigits([i+1,j]), Integer.undigits([i,j-1]), Integer.undigits([i-1,j])}
+      (i == 1) ->  [String.to_atom("node#{i}#{j-1}"),String.to_atom("node#{i}#{j+1}"),String.to_atom("node#{i+1}#{j}")]#{Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i+1,j])}
+      (i == sqn) ->  [String.to_atom("node#{i}#{j-1}"),String.to_atom("node#{i}#{j+1}"),String.to_atom("node#{i-1}#{j}")]#{Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
+      true ->  []
     end
     #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
     {:ok,{n,list,0,top}}

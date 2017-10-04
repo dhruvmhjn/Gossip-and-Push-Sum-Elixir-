@@ -44,9 +44,9 @@ defmodule GossipNode do
     if(top=="imp2D") do
       randi = :rand.uniform(sqn)
       randj = :rand.uniform(sqn)
-      list = list ++ [String.to_atom("node#{randi}#{randj}")]
+      list = list ++ [String.to_atom("node#{randi}@#{randj}")]
     end
-    IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
+    # IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
     {:ok,{n,list,0}}
   end
  

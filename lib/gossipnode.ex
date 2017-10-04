@@ -65,7 +65,6 @@ defmodule GossipNode do
     #cast to slef
     {:noreply,{n,list,localcount}}
   end
-
 end
 
 # def handle_info(:work, state) do

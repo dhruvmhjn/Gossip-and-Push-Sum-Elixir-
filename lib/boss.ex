@@ -46,7 +46,7 @@ defmodule Boss do
                     GenServer.cast(:node1, {:rumour, rstring})
                 end
                 if topology == "2D" || topology =="imp2D" do
-                    GenServer.cast(:node11, {:rumour, rstring})
+                    GenServer.cast(:node1@1, {:rumour, rstring})
                 end        
             
         end

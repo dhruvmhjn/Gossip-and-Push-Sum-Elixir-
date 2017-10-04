@@ -21,10 +21,13 @@ defmodule Boss do
         :timer.sleep(1000)
         IO.puts "bar"
 
-        GenServer.cast(:node1, {:rumour, rstring})
-        
 
-        
+        if topology == "line" || topology =="full" do
+            GenServer.cast(:node1, {:rumour, rstring})
+        end
+        if topology == "2D" || topology =="imp2D" do
+            GenServer.cast(:node11, {:rumour, rstring})
+        end
         #kregex = ~r/^\d{1,2}$/    
         boss_receiver("string")
     end

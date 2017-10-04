@@ -39,7 +39,7 @@ defmodule Boss do
             {:hello, cpid} ->
                 send cpid, {:k_valmsg, k}
             {:topology_created} ->
-                IO.puts "boss gets the signal"
+                IO.puts "Network is created"
                 rstring = "This is the first rumour"
                 if topology == "line" || topology =="full" do
                     GenServer.cast(:node1, {:rumour, rstring})

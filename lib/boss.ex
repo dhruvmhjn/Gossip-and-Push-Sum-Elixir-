@@ -6,6 +6,8 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
+
+        Process.register(self,:boss)
         
         #Code to Round OFF
         numInt = cond do
@@ -28,22 +30,23 @@ defmodule Boss do
         IO.puts "bar"
 
 
-        if topology == "line" || topology =="full" do
-            GenServer.cast(:node1, {:rumour, rstring})
-        end
-        if topology == "2D" || topology =="imp2D" do
-            GenServer.cast(:node11, {:rumour, rstring})
-        end
-
-        boss_receiver("string")
+       
+        boss_receiver("string",topology)
     end
             
-    def boss_receiver(k) do
+    def boss_receiver(k,topology) do
         receive do
             {:hello, cpid} ->
                 send cpid, {:k_valmsg, k}
+            {:topology_created, npid} ->
+                if topology == "line" || topology =="full" do
+                    GenServer.cast(:node1, {:rumour, rstring})
+                end
+                if topology == "2D" || topology =="imp2D" do
+                    GenServer.cast(:node11, {:rumour, rstring})
+                end        
         end
-        boss_receiver(k)
+        boss_receiver(k,topology)
     end
 end
         

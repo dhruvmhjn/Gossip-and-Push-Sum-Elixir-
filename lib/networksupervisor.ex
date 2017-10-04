@@ -2,7 +2,7 @@ defmodule NetworkSupervisor do
     use Supervisor
     def start_link(n,top,protocol,_) do
         {:ok,pid}= Supervisor.start_link(__MODULE__,{n,top,protocol},[])
-        send(:boss,{:topology_created})
+        send(Process.whereis(:boss),{:topology_created})
         {:ok,pid}
     end
     def init({n,top,protocol}) do

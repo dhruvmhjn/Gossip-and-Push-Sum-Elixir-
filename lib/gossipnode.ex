@@ -71,6 +71,7 @@ defmodule GossipNode do
         true -> Enum.at(list,(:rand.uniform(len_neb)-1))
     end
     GenServer.cast(name_neb, {:rumour, rstring})
+    #:timer.sleep(100)
     if localcount <= 10 do
       GenServer.cast(self(), {:spreadrumour,rstring})
     end

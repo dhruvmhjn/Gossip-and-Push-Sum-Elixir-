@@ -11,8 +11,9 @@ defmodule GossipCounter do
     end
 
     def handle_cast(:heardrumour,{count,numnodes})do
-        IO.puts "#{count} nodes have heard the rumour."
         newcount=count+1
+        IO.puts "#{newcount} node/s have heard the rumour."
+        
         if newcount == numnodes do
             IO.puts "Rumour Propogated, Terminating."
             :init.stop

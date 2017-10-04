@@ -11,28 +11,15 @@ defmodule Boss do
         
         #Code to Round OFF
         numInt = cond do
-            (topology == "2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
-                                    #IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
-            (topology =="imp2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
-                                   # IO.puts "Rounded off. Starting imp2D grid with #{numInt} Nodes." 
+            (topology == "2D") || (topology =="imp2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
             true -> numInt
         end
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
-
-        #sleep the main process
-        
-        
-        # IO.puts "foo";
-        # :timer.sleep(1000)
-        # IO.puts "bar"
-
-
-       
-        boss_receiver("string",topology,nil)
+        boss_receiver(topology,nil)
     end
             
-    def boss_receiver(k,topology,a) do
+    def boss_receiver(topology,a) do
         receive do
             {:rumourpropogated,b} ->
                 IO.puts "Time in MilliSeconds: #{b-a}"
@@ -50,7 +37,7 @@ defmodule Boss do
                 end        
             
         end
-        boss_receiver(k,topology,a)
+        boss_receiver(topology,a)
     end
 end
         

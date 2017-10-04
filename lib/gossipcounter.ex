@@ -17,7 +17,8 @@ defmodule GossipCounter do
         IO.puts "In Gcounter"
         newcount=count+1
         if newcount == numnodes do
-            exit(:Thisisfun)
+            :init.stop
+            #OR Supervisor.stop(sup)
         end
         {:noreply,{newcount,numnodes}}
     end

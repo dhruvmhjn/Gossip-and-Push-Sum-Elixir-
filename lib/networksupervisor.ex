@@ -9,7 +9,6 @@ defmodule NetworkSupervisor do
     def init({n,top,protocol}) do
         n_list = Enum.to_list 1..n
         children = Enum.map(n_list, fn(x)->worker(GossipNode, [top,n,x], [id: "node#{x}"]) end)
-        IO.inspect length children
         supervise children, strategy: :one_for_one
     end
 end

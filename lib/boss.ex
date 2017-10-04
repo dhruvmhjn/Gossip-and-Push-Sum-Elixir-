@@ -7,7 +7,7 @@ defmodule Boss do
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
 
-        Process.register(self,:boss)
+        Process.register(self(),:boss)
         
         #Code to Round OFF
         numInt = cond do
@@ -24,10 +24,10 @@ defmodule Boss do
 
         #sleep the main process
         
-        rstring = "This is the first rumour"
-        IO.puts "foo";
-        :timer.sleep(1000)
-        IO.puts "bar"
+        
+        # IO.puts "foo";
+        # :timer.sleep(1000)
+        # IO.puts "bar"
 
 
        
@@ -38,7 +38,8 @@ defmodule Boss do
         receive do
             {:hello, cpid} ->
                 send cpid, {:k_valmsg, k}
-            {:topology_created, npid} ->
+            {:topology_created, _} ->
+                rstring = "This is the first rumour"
                 if topology == "line" || topology =="full" do
                     GenServer.cast(:node1, {:rumour, rstring})
                 end

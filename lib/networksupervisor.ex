@@ -1,11 +1,11 @@
 defmodule NetworkSupervisor do
     use Supervisor
-    def start_link(n,top,protocol,gcpid) do
-        {:ok,_pid}= Supervisor.start_link(__MODULE__,{n,top,protocol,gcpid},[])
+    def start_link(n,top,protocol,_) do
+        {:ok,pid}= Supervisor.start_link(__MODULE__,{n,top,protocol},[])
         send(:boss,{:topology_created})
-        {:ok,_pid}
+        {:ok,pid}
     end
-    def init({n,top,protocol,gcpid}) do
+    def init({n,top,protocol}) do
         n_list = Enum.to_list 1..n
         children = Enum.map(n_list, fn(x)->worker(GossipNode, [top,n,x], [id: "node#{x}"]) end)
         supervise children, strategy: :one_for_one

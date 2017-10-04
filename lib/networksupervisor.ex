@@ -2,7 +2,7 @@ defmodule NetworkSupervisor do
     use Supervisor
     def start_link(n,top,protocol,_) do
         {:ok,pid}= Supervisor.start_link(__MODULE__,{n,top,protocol},[])
-        IO.puts "boss pid from nsup : #{inspect(Process.whereis(:boss))}"
+        #IO.puts "boss pid from nsup : #{inspect(Process.whereis(:boss))}"
         send(Process.whereis(:boss),{:topology_created})
         {:ok,pid}
     end

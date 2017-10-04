@@ -6,7 +6,7 @@ defmodule Boss do
         cmdarg = OptionParser.parse(args)
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
-        IO.puts "#{inspect(self)}"
+        #IO.puts "#{inspect(self)}"
         Process.register(self(),:boss)
         
         #Code to Round OFF

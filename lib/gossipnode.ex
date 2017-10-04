@@ -2,7 +2,6 @@ defmodule GossipNode do
   use GenServer
   
   def start_link(top,n,x) do
-    #IO.puts "abc in genplay"
     sqn=round(:math.sqrt(n))
     i = div((x-1),sqn) + 1
     j = rem((x-1),sqn) + 1 
@@ -10,7 +9,6 @@ defmodule GossipNode do
       (top == "line")||(top == "full") ->  GenServer.start_link(__MODULE__, {top,n,x,0}, name: String.to_atom("node#{x}"))
       (top == "2D") || (top == "imp2D") ->  GenServer.start_link(__MODULE__, {top,n,i,j}, name: String.to_atom("node#{i}#{j}"))
     end
-  # {:ok, pid} = GenServer.start_link(__MODULE__, {top,n,i,0}, name: myname )
   returnok
   end
 
@@ -42,7 +40,7 @@ defmodule GossipNode do
       (i == sqn) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
       true ->  {}
     end
-   #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
+    #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
     {:ok,{n,list,0,top}}
   end
  
@@ -62,20 +60,8 @@ defmodule GossipNode do
     #Code For fukk
     
     #GenServer.cast()
-    :timer.sleep(1000)
-
-    #cast to slef
+    :timer.sleep(100)
+    GenServer.cast(self(), {:spreadrumour,rsrting})
     {:noreply,{n,list,localcount}}
   end
 end
-
-# def handle_info(:work, state) do
-#   # Do the desired work here
-#   schedule_work() # Reschedule once more
-#   {:noreply, state}
-# end
-
-# defp schedule_work() do
-#   Process.send_after(self(), :work, 1000) # In 2 hours
-# end
-# end

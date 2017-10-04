@@ -1,11 +1,8 @@
 defmodule GossipCounter do
     use GenServer
     def start_link(numnodes) do
-        #IO.puts "abc in gcounter"
         myname = String.to_atom("gcounter")
-        return = {:ok, pid} = GenServer.start_link(__MODULE__, {numnodes}, name: myname )
-        #IO.puts "abc in gcounter"
-        #IO.inspect pid
+        return = GenServer.start_link(__MODULE__, {numnodes}, name: myname )
         return
     end
     
@@ -14,9 +11,10 @@ defmodule GossipCounter do
     end
 
     def handle_cast(:heardrumour,{count,numnodes})do
-        IO.puts "In Gcounter"
+        IO.puts "#{count} nodes have heard the rumour."
         newcount=count+1
         if newcount == numnodes do
+            IO.puts "Rumour Propogated, Terminating."
             :init.stop
             #OR Supervisor.stop(sup)
         end

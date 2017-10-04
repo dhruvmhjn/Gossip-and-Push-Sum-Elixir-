@@ -5,9 +5,10 @@ defmodule Boss do
     end
     defp parse_args(args,temp_asnode) do
         cmdarg = OptionParser.parse(args)
-        #IO.inspect cmdarg 
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
+        
+        #Code to Round OFF
         if topology == "2D" || topology =="imp2D" do
             numInt = round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
             IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
@@ -15,7 +16,8 @@ defmodule Boss do
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
 
-        #sleep
+        #sleep the main process
+        
         rstring = "This is the first rumour"
         IO.puts "foo";
         :timer.sleep(1000)
@@ -28,7 +30,7 @@ defmodule Boss do
         if topology == "2D" || topology =="imp2D" do
             GenServer.cast(:node11, {:rumour, rstring})
         end
-        #kregex = ~r/^\d{1,2}$/    
+           
         boss_receiver("string")
     end
             

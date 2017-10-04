@@ -5,11 +5,8 @@ defmodule NetworkSupervisor do
 
     end
     def init({n,top,protocol,gcpid}) do
-        #numnodes = String.to_integer(n) 
-        n_miners = Enum.to_list 1..n
-        #IO.inspect n_miners
-        children = Enum.map(n_miners, fn(x)->worker(GossipNode, [top,n,x], [id: "node#{x}"]) end)
-        #IO.inspect children
+        n_list = Enum.to_list 1..n
+        children = Enum.map(n_list, fn(x)->worker(GossipNode, [top,n,x], [id: "node#{x}"]) end)
         supervise children, strategy: :one_for_one
     end
 end

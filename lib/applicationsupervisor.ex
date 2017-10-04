@@ -14,7 +14,8 @@ defmodule ApplicationSupervisor do
         end
 
         if algorithm == "push-sum" do
-            
+            {:ok, gcpid} = Supervisor.start_child(sup, worker(PushsumCounter, [numNodes]))     
+            Supervisor.start_child(sup, supervisor(PushsumSupervisor, [numNodes,topology,gcpid]))
         end
     
     end

@@ -16,10 +16,10 @@ defmodule Boss do
         end
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
-        boss_receiver(topology,nil)
+        boss_receiver(topology,nil,numInt)
     end
             
-    def boss_receiver(topology,a) do
+    def boss_receiver(topology,a,numInt) do
         receive do
             {:rumourpropogated,b} ->
                 IO.puts "Time in MilliSeconds: #{b-a}"
@@ -34,9 +34,17 @@ defmodule Boss do
                 end
                 if topology == "2D" || topology =="imp2D" do
                     GenServer.cast(:node1@1, {:rumour, rstring})
-                end        
-            
+                end
+            {:pushsum_topology_created} ->
+                IO.puts "PushSum Network is created"
+                a = System.system_time(:millisecond)
+                if topology == "line" || topology =="full" do
+                    #GenServer.cast(:node1, {:rumour, rstring})
+                end
+                if topology == "2D" || topology =="imp2D" do
+                    #GenServer.cast(:node1@1, {:rumour, rstring})
+                end                
         end
-        boss_receiver(topology,a)
+        boss_receiver(topology,a,numInt)
     end
 end

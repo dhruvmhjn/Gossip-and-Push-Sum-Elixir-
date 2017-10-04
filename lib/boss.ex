@@ -35,13 +35,13 @@ defmodule Boss do
     def boss_receiver(k,topology,a) do
         receive do
             {:rumourpropogated,b} ->
-                IO.puts b-a
+                IO.puts "Time in MilliSeconds: #{b-a}"
                 :init.stop
             {:topology_created} ->
                 rstring = "This is the first rumour"
                 IO.puts "Network is created"
                 #rstring = "This is the first rumour"
-                IO.puts a = System.system_time(:millisecond)
+                a = System.system_time(:millisecond)
                 if topology == "line" || topology =="full" do
                     GenServer.cast(:node1, {:rumour, rstring})
                 end

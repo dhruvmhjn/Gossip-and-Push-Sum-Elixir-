@@ -52,16 +52,19 @@ defmodule GossipNode do
     if localcount <= 10 do
       GenServer.cast(self(), {:spreadrumour,rsrting})
     end
-    {:noreply,{n,list,localcount}}
+    {:noreply,{n,list,localcount,top}}
   end
   
-  def handle_cast({:spreadrumour,rsrting},{n,list,localcount,full})do
+  def handle_cast({:spreadrumour,rsrting},{n,list,localcount,top})do
     #Random neighbour call
     #Code For fukk
     
     #GenServer.cast()
     :timer.sleep(100)
-    GenServer.cast(self(), {:spreadrumour,rsrting})
-    {:noreply,{n,list,localcount}}
+    if localcount <= 10 do
+      GenServer.cast(self(), {:spreadrumour,rsrting})
+    end
+    #GenServer.cast(self(), {:spreadrumour,rsrting})
+    {:noreply,{n,list,localcount,top}}
   end
 end

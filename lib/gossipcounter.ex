@@ -4,6 +4,8 @@ defmodule GossipCounter do
         #IO.puts "abc in gcounter"
         myname = String.to_atom("gcounter")
         return = {:ok, pid} = GenServer.start_link(__MODULE__, {numnodes}, name: myname )
+        #IO.puts "abc in gcounter"
+        #IO.inspect pid
         return
     end
     
@@ -11,8 +13,13 @@ defmodule GossipCounter do
         {:ok,{0,numnodes}}
     end
 
-    def handle_cast(:count,_from,count)do
-        {:reply,count,count+1}
+    def handle_cast(:heardrumour,{count,numnodes})do
+        IO.puts "In Gcounter"
+        newcount=count+1
+        if newcount == numnodes do
+            exit(:Thisisfun)
+        end
+        {:noreply,{newcount,numnodes}}
     end
 
 end

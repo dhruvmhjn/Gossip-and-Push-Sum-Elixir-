@@ -1,3 +1,8 @@
+Implemt recurion
+
+https://stackoverflow.com/questions/35364511/proper-elixir-otp-way-to-structure-an-infinite-loop-task
+
+
 # Project2
 
 **TODO: Add description**

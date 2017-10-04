@@ -14,7 +14,14 @@ defmodule Boss do
         end
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
-        
+
+        #sleep
+        rstring = "This is the first rumor"
+        IO.puts "foo";
+        :timer.sleep(1000)
+        IO.puts "bar"
+
+        GenServer.cast(:node1, {:rumour, rstring})
         
 
         

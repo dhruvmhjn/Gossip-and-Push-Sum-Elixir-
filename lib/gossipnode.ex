@@ -2,7 +2,7 @@ defmodule GossipNode do
   use GenServer
   
   def start_link(top,n,x) do
-    IO.puts "abc in genplay"
+    #IO.puts "abc in genplay"
     sqn=round(:math.sqrt(n))
     i = div((x-1),sqn) + 1
     j = rem((x-1),sqn) + 1 
@@ -42,13 +42,18 @@ defmodule GossipNode do
       (i == sqn) ->  {Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
       true ->  {}
     end
-    IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
-    {:ok,{n,list}}
+   #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
+    {:ok,{n,list,0}}
   end
  
-  def handle_call(:rumour,_from,count)do
-    {:reply,count,count+1}
+  def handle_cast({:rumour,rsrting},{n,list,localcount})do
+    localcount = localcount + 1
+    if localcount == 1 do
+      GenServer.cast(:gcounter, :heardrumour)
+    end
+    if localcount <= 10 do
+      GenServer.cast(:node2, {:rumour,rsrting})
+    end
+    {:noreply,{n,list,localcount}}
   end
-
- 
 end

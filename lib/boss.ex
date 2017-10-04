@@ -24,7 +24,7 @@ defmodule Boss do
             {:rumourpropogated,b} ->
                 IO.puts "Time in MilliSeconds: #{b-a}"
                 :init.stop
-            {:topology_created} ->
+            {:gossip_topology_created} ->
                 rstring = "This is the first rumour"
                 IO.puts "Network is created"
                 #rstring = "This is the first rumour"

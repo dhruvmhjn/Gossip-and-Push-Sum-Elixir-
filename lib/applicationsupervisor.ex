@@ -8,8 +8,14 @@ defmodule ApplicationSupervisor do
     
     def start_workers(sup, [numNodes,topology,algorithm]) do
     
-        {:ok, gcpid} = Supervisor.start_child(sup, worker(GossipCounter, [numNodes]))     
-        Supervisor.start_child(sup, supervisor(NetworkSupervisor, [numNodes,topology,algorithm,gcpid]))
+        if algorithm == "gossip" do
+            {:ok, gcpid} = Supervisor.start_child(sup, worker(GossipCounter, [numNodes]))     
+            Supervisor.start_child(sup, supervisor(GossipSupervisor, [numNodes,topology,gcpid]))
+        end
+
+        if algorithm == "push-sum" do
+            
+        end
     
     end
     

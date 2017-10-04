@@ -15,8 +15,8 @@ defmodule GossipCounter do
         #IO.puts "#{newcount} node/s have heard the rumour."
         
         if newcount == numnodes do
-            IO.puts "Rumour Propogated, Terminating."
             b = System.system_time(:millisecond)
+            IO.puts "Rumour Propogated, Terminating."
             send(Process.whereis(:boss),{:rumourpropogated,b})
             #s:init.stop
             #OR Supervisor.stop(sup)

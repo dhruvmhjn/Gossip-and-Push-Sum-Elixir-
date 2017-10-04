@@ -41,10 +41,10 @@ defmodule GossipNode do
       true ->  []
     end
     #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
-    {:ok,{n,list,0,top}}
+    {:ok,{n,list,0}}
   end
  
-  def handle_cast({:rumour,rsrting},{n,list,localcount,top})do
+  def handle_cast({:rumour,rsrting},{n,list,localcount})do
     localcount = localcount + 1
     if localcount == 1 do
       GenServer.cast(:gcounter, :heardrumour)
@@ -52,19 +52,24 @@ defmodule GossipNode do
     if localcount <= 10 do
       GenServer.cast(self(), {:spreadrumour,rsrting})
     end
-    {:noreply,{n,list,localcount,top}}
+    {:noreply,{n,list,localcount}}
   end
   
-  def handle_cast({:spreadrumour,rsrting},{n,list,localcount,top})do
+  def handle_cast({:spreadrumour,rstring},{n,list,localcount})do
+    
     #Random neighbour call
     #Code For fukk
-    
-    #GenServer.cast()
+    len_neb = length(list)
+    name_neb = cond do
+        len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
+        true -> Enum.at(list,(:rand.uniform(len_neb)-1))
+    end
+    GenServer.cast(name_neb, {:rumour, rstring})
     :timer.sleep(100)
     if localcount <= 10 do
-      GenServer.cast(self(), {:spreadrumour,rsrting})
+      GenServer.cast(self(), {:spreadrumour,rstring})
     end
     #GenServer.cast(self(), {:spreadrumour,rsrting})
-    {:noreply,{n,list,localcount,top}}
+    {:noreply,{n,list,localcount}}
   end
 end

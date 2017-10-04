@@ -40,4 +40,3 @@ defmodule Boss do
         boss_receiver(topology,a)
     end
 end
-        

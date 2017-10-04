@@ -2,6 +2,8 @@ Implemt recurion
 
 https://stackoverflow.com/questions/35364511/proper-elixir-otp-way-to-structure-an-infinite-loop-task
 
+STopping OTP: https://elixirforum.com/t/properly-stopping-a-supervision-tree-with-cleanup/916
+
 
 # Project2
 

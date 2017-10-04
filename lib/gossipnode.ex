@@ -52,8 +52,29 @@ defmodule GossipNode do
       GenServer.cast(:gcounter, :heardrumour)
     end
     if localcount <= 10 do
-      GenServer.cast(:node2, {:rumour,rsrting})
+      GenServer.cast(self(), {:spreadrumour,rsrting})
     end
     {:noreply,{n,list,localcount}}
   end
+  
+  def handle_cast({:spreadrumour,rsrting},{n,list,localcount})do
+    #Random neighbour call
+    #GenServer.cast()
+    :timer.sleep(1000)
+
+    #cast to slef
+    {:noreply,{n,list,localcount}}
+  end
+
 end
+
+# def handle_info(:work, state) do
+#   # Do the desired work here
+#   schedule_work() # Reschedule once more
+#   {:noreply, state}
+# end
+
+# defp schedule_work() do
+#   Process.send_after(self(), :work, 1000) # In 2 hours
+# end
+# end

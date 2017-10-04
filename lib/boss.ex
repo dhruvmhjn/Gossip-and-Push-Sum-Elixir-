@@ -16,7 +16,7 @@ defmodule Boss do
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
 
         #sleep
-        rstring = "This is the first rumor"
+        rstring = "This is the first rumour"
         IO.puts "foo";
         :timer.sleep(1000)
         IO.puts "bar"

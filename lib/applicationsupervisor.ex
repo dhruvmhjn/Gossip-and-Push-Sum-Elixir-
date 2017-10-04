@@ -8,7 +8,7 @@ defmodule ApplicationSupervisor do
     
     def start_workers(sup, [numNodes,topology,algorithm]) do
     
-        {:ok, _} = Supervisor.start_child(sup, worker(GossipCounter, [numNodes]))     
+        {:ok, gcpid} = Supervisor.start_child(sup, worker(GossipCounter, [numNodes]))     
         Supervisor.start_child(sup, supervisor(NetworkSupervisor, [numNodes,topology,algorithm,gcpid]))
     
     end

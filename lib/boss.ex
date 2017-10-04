@@ -12,12 +12,10 @@ defmodule Boss do
         #Code to Round OFF
         numInt = cond do
             (topology == "2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
+                                    #IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
             (topology =="imp2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
+                                   # IO.puts "Rounded off. Starting imp2D grid with #{numInt} Nodes." 
             true -> numInt
-        end
-
-        if topology == "2D" || topology =="imp2D" do
-            IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
         end
         
         ApplicationSupervisor.start_link([numInt,topology,algorithm])
@@ -31,24 +29,28 @@ defmodule Boss do
 
 
        
-        boss_receiver("string",topology)
+        boss_receiver("string",topology,nil)
     end
             
-    def boss_receiver(k,topology) do
+    def boss_receiver(k,topology,a) do
         receive do
-            {:hello, cpid} ->
-                send cpid, {:k_valmsg, k}
+            {:rumourpropogated,b} ->
+                IO.puts b-a
+                :init.stop
             {:topology_created} ->
-                IO.puts "Network is created"
                 rstring = "This is the first rumour"
+                IO.puts "Network is created"
+                #rstring = "This is the first rumour"
+                IO.puts a = System.system_time(:millisecond)
                 if topology == "line" || topology =="full" do
                     GenServer.cast(:node1, {:rumour, rstring})
                 end
                 if topology == "2D" || topology =="imp2D" do
                     GenServer.cast(:node11, {:rumour, rstring})
                 end        
+            
         end
-        boss_receiver(k,topology)
+        boss_receiver(k,topology,a)
     end
 end
         

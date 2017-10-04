@@ -12,11 +12,13 @@ defmodule GossipCounter do
 
     def handle_cast(:heardrumour,{count,numnodes})do
         newcount=count+1
-        IO.puts "#{newcount} node/s have heard the rumour."
+        #IO.puts "#{newcount} node/s have heard the rumour."
         
         if newcount == numnodes do
             IO.puts "Rumour Propogated, Terminating."
-            :init.stop
+            b = System.system_time(:millisecond)
+            send(Process.whereis(:boss),{:rumourpropogated,b})
+            #s:init.stop
             #OR Supervisor.stop(sup)
         end
         {:noreply,{newcount,numnodes}}

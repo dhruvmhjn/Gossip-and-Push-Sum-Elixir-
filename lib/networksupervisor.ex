@@ -8,7 +8,7 @@ defmodule NetworkSupervisor do
     end
     def init({n,top,protocol}) do
         n_list = Enum.to_list 1..n
-        IO.puts n_list
+        IO.puts "n_list creaded"
         children = Enum.map(n_list, fn(x)->worker(GossipNode, [top,n,x], [id: "node#{x}"]) end)
         supervise children, strategy: :one_for_one
     end

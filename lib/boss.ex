@@ -1,16 +1,20 @@
 defmodule Boss do
-    @name "BOSS"
     def main(args) do 
-        parse_args(args,@name)
+        parse_args(args)
     end
-    defp parse_args(args,temp_asnode) do
+    defp parse_args(args) do
         cmdarg = OptionParser.parse(args)
         {[],[numNodes,topology,algorithm],[]} = cmdarg
         numInt = String.to_integer(numNodes)
         
         #Code to Round OFF
+        numInt = cond do
+            (topology == "2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
+            (topology =="imp2D") -> round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
+            true -> numInt
+        end
+
         if topology == "2D" || topology =="imp2D" do
-            numInt = round(:math.pow(Float.ceil(:math.sqrt(numInt)),2))
             IO.puts "Rounded off. Starting 2D grid with #{numInt} Nodes." 
         end
         
@@ -30,7 +34,7 @@ defmodule Boss do
         if topology == "2D" || topology =="imp2D" do
             GenServer.cast(:node11, {:rumour, rstring})
         end
-           
+
         boss_receiver("string")
     end
             

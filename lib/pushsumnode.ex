@@ -42,29 +42,35 @@ defmodule PushsumNode do
     end
 
     def handle_cast({:rumour,s1,w1},{n,list,ratio,t_counter,s,w}) do
-        if (t_counter < 3) do
+        if (t_counter < 10) do
             #IO.puts t_counter
             s = s + s1
             w = w + w1
-            newratio = Float.round(s/w,12)
-            {t_counter,ratio} = cond do
-                (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) -> {t_counter+1,newratio}
-                true -> {0,newratio}
+            newratio = s/w
+            if  (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) do
+                t_counter = t_counter+1
+            else
+                t_counter = 0   
             end
-            if (t_counter == 3) do
+
+            #{t_counter,ratio} = cond do
+            #    (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) -> {t_counter+1,newratio}
+            #    true -> {0,newratio}
+            #end
+            if (t_counter == 10) do
                 GenServer.cast(:pcounter, {:sumreport,s/w})
             end
             # start spreading the rumour -> cast to self 
-            if (t_counter < 3) do 
+            if (t_counter < 10) do 
                 GenServer.cast(self(), {:spreadrumour})
             end
         end
         
-    {:noreply,{n,list,ratio,t_counter,s,w}}
+    {:noreply,{n,list,newratio,t_counter,s,w}}
     end
 
    def handle_cast({:spreadrumour},{n,list,ratio,t_counter,s,w}) do
-    if t_counter < 3 do
+    if t_counter < 10 do
         len_neb = length(list)
         name_neb = cond do
             len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")

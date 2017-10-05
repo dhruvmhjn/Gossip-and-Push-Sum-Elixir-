@@ -1,7 +1,7 @@
 defmodule PushsumCounter do
     use GenServer
     def start_link(numnodes) do
-        myname = String.to_atom("pcoumter")
+        myname = String.to_atom("pcounter")
         return = GenServer.start_link(__MODULE__, {numnodes}, name: myname )
         return
     end
@@ -13,6 +13,7 @@ defmodule PushsumCounter do
 
     def handle_cast({:sumreport,computedsum},{count,numnodes,truesum})do
         newcount=count+1
+        IO.puts "#{newcount} node terminated, sum: #{computedsum}"
         if newcount == numnodes do
             b = System.system_time(:millisecond)
             IO.puts "Sum Computed, Terminating."

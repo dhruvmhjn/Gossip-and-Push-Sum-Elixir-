@@ -39,11 +39,14 @@ defmodule Boss do
                 IO.puts "PushSum Network is created"
                 a = System.system_time(:millisecond)
                 if topology == "line" || topology =="full" do
-                    #GenServer.cast(:node1, {:rumour, rstring})
+                    GenServer.cast(:node1, {:rumour,0.0,0.0})
                 end
                 if topology == "2D" || topology =="imp2D" do
-                    #GenServer.cast(:node1@1, {:rumour, rstring})
-                end                
+                    GenServer.cast(:node1@1, {:rumour,0.0,0.0})
+                end
+            {:sumcomputed,b} ->
+                IO.puts "Time in MilliSeconds: #{b-a}"
+                :init.stop                
         end
         boss_receiver(topology,a,numInt)
     end

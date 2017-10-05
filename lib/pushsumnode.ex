@@ -47,7 +47,7 @@ defmodule PushsumNode do
             w = w + w1
             newratio = Float.round(s/w,12)
             {t_counter,ratio} = cond do
-                abs(ratio-newratio) < :math.pow(10.0,-10) -> {t_counter+1,newratio}
+                (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) -> {t_counter+1,newratio}
                 true -> {0,newratio}
             end
             if (t_counter == 3) do
@@ -69,6 +69,7 @@ defmodule PushsumNode do
             len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
             true -> Enum.at(list,(:rand.uniform(len_neb)-1))
         end
+        #IO.inspect name_neb
         GenServer.cast(name_neb, {:rumour, s/2,w/2})
         s=s/2
         w=w/2

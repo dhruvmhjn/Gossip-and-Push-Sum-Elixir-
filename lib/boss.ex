@@ -29,22 +29,23 @@ defmodule Boss do
                 IO.puts "Gossip Network is created"
                 #rstring = "This is the first rumour"
                 a = System.system_time(:millisecond)
+
                 if topology == "line" || topology =="full" do
-                    GenServer.cast(String.to_atom(":node#{:rand.uniform(numInt)}"), {:rumour, rstring})
+                    GenServer.cast(String.to_atom("node#{:rand.uniform(numInt)}"), {:rumour, rstring})
                 end
                 if topology == "2D" || topology =="imp2D" do
                     sqn= round(:math.sqrt(numInt))
-                    GenServer.cast(String.to_atom(":node#{:rand.uniform(sqn)}@#{:rand.uniform(sqn)}"), {:rumour, rstring})
+                    GenServer.cast(String.to_atom("node#{:rand.uniform(sqn)}@#{:rand.uniform(sqn)}"), {:rumour, rstring})
                 end
             {:pushsum_topology_created} ->
                 IO.puts "PushSum Network is created"
                 a = System.system_time(:millisecond)
                 if topology == "line" || topology =="full" do
-                    GenServer.cast(String.to_atom(":node#{:rand.uniform(numInt)}"), {:rumour,0.0,0.0})
+                    GenServer.cast(String.to_atom("node#{:rand.uniform(numInt)}"), {:rumour,0.0,0.0})
                 end
                 if topology == "2D" || topology =="imp2D" do
                     sqn= round(:math.sqrt(numInt))
-                    GenServer.cast(String.to_atom(":node#{:rand.uniform(sqn)}@#{:rand.uniform(sqn)}"), {:rumour,0.0,0.0})
+                    GenServer.cast(String.to_atom("node#{:rand.uniform(sqn)}@#{:rand.uniform(sqn)}"), {:rumour,0.0,0.0})
                 end
             {:sumcomputed,b} ->
                 IO.puts "Time in MilliSeconds: #{b-a}"

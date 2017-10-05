@@ -51,6 +51,7 @@ defmodule GossipNode do
   end
  
   def handle_cast({:rumour,rsrting},{n,list,localcount})do
+    #IO.puts "Gossiping"
     localcount = localcount + 1
     if localcount == 1 do
       GenServer.cast(:gcounter, :heardrumour)

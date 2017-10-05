@@ -55,7 +55,7 @@ defmodule GossipNode do
     if localcount == 1 do
       GenServer.cast(:gcounter, :heardrumour)
     end
-    if localcount <= 10 do
+    if localcount < 10 do
       GenServer.cast(self(), {:spreadrumour,rsrting})
     end
     {:noreply,{n,list,localcount}}
@@ -72,7 +72,7 @@ defmodule GossipNode do
     end
     GenServer.cast(name_neb, {:rumour, rstring})
     #:timer.sleep(100)
-    if localcount <= 10 do
+    if localcount < 10 do
       GenServer.cast(self(), {:spreadrumour,rstring})
     end
     #GenServer.cast(self(), {:spreadrumour,rsrting})

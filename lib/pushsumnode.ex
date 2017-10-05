@@ -6,13 +6,13 @@ defmodule PushsumNode do
         i = div((x-1),sqn) + 1
         j = rem((x-1),sqn) + 1 
         returnok = {:ok,_pid} = cond do
-          (top == "line")||(top == "full") ->  GenServer.start_link(__MODULE__, {top,n,x,x,0}, name: String.to_atom("node#{x}"))
-          (top == "2D") || (top == "imp2D") ->  GenServer.start_link(__MODULE__, {top,n,x,i,j}, name: String.to_atom("node#{i}@#{j}"))
+          (top == "line")||(top == "full") ->  GenServer.start_link(PushsumNode, {top,n,x,x,0}, name: String.to_atom("node#{x}"))
+          (top == "2D") || (top == "imp2D") ->  GenServer.start_link(PushsumNode, {top,n,x,i,j}, name: String.to_atom("node#{i}@#{j}"))
         end
       returnok        
     end
 
-    def init(top,n,x,i,j) do
+    def init({top,n,x,i,j}) do
         sqn= round(:math.sqrt(n))
         list = cond do
           (top == "full") -> []  
@@ -37,7 +37,8 @@ defmodule PushsumNode do
           list = list ++ [String.to_atom("node#{randi}@#{randj}")]
         end
        # state: num modes, list of neighbours, last s/w, termination counter, s, w
-        {:ok,{n,list,nil,0,x,1}}
+       IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
+        {:ok,{n, list, 0, 0, x, 1}}
     end
 
     def handle_cast({:rumour,s1,w1},{n,list,ratio,t_counter,s,w}) do
@@ -46,7 +47,7 @@ defmodule PushsumNode do
             w = w + w1
             newratio = Float.round(s/w,12)
             {t_counter,ratio} = cond do
-                abs(ratio-newratio) < :math.pow(10,-10) -> {t_counter+1,newratio}
+                abs(ratio-newratio) < :math.pow(10.0,-10) -> {t_counter+1,newratio}
                 true -> {0,newratio}
             end
             if (t_counter == 3) do

@@ -30,7 +30,7 @@ defmodule PushsumNode do
           (i == sqn) ->  [String.to_atom("node#{i}@#{j-1}"),String.to_atom("node#{i}@#{j+1}"),String.to_atom("node#{i-1}@#{j}")]#{Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
           true ->  []
         end
-       
+
         if(top=="imp2D") do
           randi = :rand.uniform(sqn)
           randj = :rand.uniform(sqn)
@@ -44,30 +44,35 @@ defmodule PushsumNode do
         if (t_counter < 3) do
             s = s + s1
             w = w + w1
-            newratio = Float.round(s/w,9)
+            newratio = Float.round(s/w,12)
             {t_counter,ratio} = cond do
                 abs(ratio-newratio) < :math.pow(10,-10) -> {t_counter+1,newratio}
                 true -> {0,newratio}
             end
-            if t_counter == 3 do
+            if (t_counter == 3) do
                 GenServer.cast(:pcounter, {:sumreport,s/w})
-              end
+            end
             # start spreading the rumour -> cast to self 
-            GenServer.cast(self(), {:spreadrumour})
+            if (t_counter < 3) do 
+                GenServer.cast(self(), {:spreadrumour})
+            end
         end
+        
     {:noreply,{n,list,ratio,t_counter,s,w}}
     end
 
    def handle_cast({:spreadrumour},{n,list,ratio,t_counter,s,w}) do
-    len_neb = length(list)
-    name_neb = cond do
-        len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
-        true -> Enum.at(list,(:rand.uniform(len_neb)-1))
-    end
-    GenServer.cast(name_neb, {:rumour, s/2,w/2})
     if t_counter < 3 do
+        len_neb = length(list)
+        name_neb = cond do
+            len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
+            true -> Enum.at(list,(:rand.uniform(len_neb)-1))
+        end
+        GenServer.cast(name_neb, {:rumour, s/2,w/2})
+        s=s/2
+        w=w/2
         GenServer.cast(self(), {:spreadrumour})
-      end
-    {:noreply,{n,list,ratio,t_counter,s/2,w/2}}
+    end  
+    {:noreply,{n,list,ratio,t_counter,s,w}} 
    end
 end

@@ -11,7 +11,7 @@ defmodule PushsumCounter do
         {:ok,{0,numnodes,truesum}}
     end
 
-    def handle_cast({:sumvalue,computedsum},{count,numnodes,truesum})do
+    def handle_cast({:sumreport,computedsum},{count,numnodes,truesum})do
         newcount=count+1
         if newcount == numnodes do
             b = System.system_time(:millisecond)

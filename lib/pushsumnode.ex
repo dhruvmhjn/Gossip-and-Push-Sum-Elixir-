@@ -50,7 +50,7 @@ defmodule PushsumNode do
                 true -> {0,newratio}
             end
             if t_counter == 3 do
-                GenServer.cast(:pcounter, {:sumvalue,s/w})
+                GenServer.cast(:pcounter, {:sumreport,s/w})
               end
             # start spreading the rumour -> cast to self 
             GenServer.cast(self(), {:spreadrumour})

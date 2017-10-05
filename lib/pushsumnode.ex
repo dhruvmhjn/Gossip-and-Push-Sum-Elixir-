@@ -49,10 +49,25 @@ defmodule PushsumNode do
                 abs(ratio-newratio) < :math.pow(10,-10) -> {t_counter+1,newratio}
                 true -> {0,newratio}
             end
+            if t_counter == 3 do
+                GenServer.cast(:pcounter, {:sumvalue,s/w})
+              end
             # start spreading the rumour -> cast to self 
+            GenServer.cast(self(), {:spreadrumour})
         end
-        {:noreply,{n,list,ratio,t_counter,s,w}}
+    {:noreply,{n,list,ratio,t_counter,s,w}}
     end
 
-    # def handle_cast({:spread_rumour,t_counter}{})
+   def handle_cast({:spreadrumour},{n,list,ratio,t_counter,s,w}) do
+    len_neb = length(list)
+    name_neb = cond do
+        len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
+        true -> Enum.at(list,(:rand.uniform(len_neb)-1))
+    end
+    GenServer.cast(name_neb, {:rumour, s/2,w/2})
+    if t_counter < 3 do
+        GenServer.cast(self(), {:spreadrumour})
+      end
+    {:noreply,{n,list,ratio,t_counter,s/2,w/2}}
+   end
 end

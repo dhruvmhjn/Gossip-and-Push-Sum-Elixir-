@@ -64,7 +64,7 @@ defmodule GossipNode do
   def handle_cast({:spreadrumour,rstring},{n,list,localcount})do
     
     #Random neighbour call
-    #Code For fukk
+    #Code For pick
     len_neb = length(list)
     name_neb = cond do
         len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")

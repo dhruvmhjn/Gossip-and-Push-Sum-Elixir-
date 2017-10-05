@@ -43,7 +43,7 @@ defmodule PushsumNode do
 
     def handle_cast({:rumour,s1,w1},{n,list,ratio,t_counter,s,w}) do
         if (t_counter < 3) do
-            IO.puts t_counter
+            #IO.puts t_counter
             s = s + s1
             w = w + w1
             newratio = Float.round(s/w,12)
@@ -70,17 +70,10 @@ defmodule PushsumNode do
             len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
             true -> Enum.at(list,(:rand.uniform(len_neb)-1))
         end
-<<<<<<< HEAD
-        #IO.inspect name_neb
-        GenServer.cast(name_neb, {:rumour, s/2,w/2})
-        s=s/2
-        w=w/2
-=======
         GenServer.cast(name_neb, {:rumour, s/2.0,w/2.0})
         s=s/2.0
         w=w/2.0
 
->>>>>>> 36a5aa39adb415ed869a179f999eb3e717134bb8
         GenServer.cast(self(), {:spreadrumour})
     end  
     {:noreply,{n,list,ratio,t_counter,s,w}} 

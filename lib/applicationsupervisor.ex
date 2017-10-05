@@ -21,7 +21,7 @@ defmodule ApplicationSupervisor do
     end
     
     def init(_) do
-        supervise [], strategy: :one_for_one
+        supervise [], strategy: :one_for_all
     end
 
 end

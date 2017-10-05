@@ -26,7 +26,7 @@ defmodule Boss do
                 :init.stop
             {:gossip_topology_created} ->
                 rstring = "This is the first rumour"
-                IO.puts "Network is created"
+                IO.puts "Gossip Network is created"
                 #rstring = "This is the first rumour"
                 a = System.system_time(:millisecond)
                 if topology == "line" || topology =="full" do

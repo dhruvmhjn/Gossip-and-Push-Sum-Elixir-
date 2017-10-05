@@ -12,14 +12,13 @@ defmodule PushsumCounter do
     end
 
     def handle_cast({:sumreport,computedsum},{count,numnodes,truesum})do
-        newcount=count+1
-        IO.puts "#{newcount} node terminated, sum: #{computedsum}"
-        if newcount == numnodes do
-            b = System.system_time(:millisecond)
-            IO.puts "Sum Computed, Terminating."
-            send(Process.whereis(:boss),{:sumcomputed,b})   
-        end
-        {:noreply,{newcount,numnodes,truesum}}
+        #IO.puts "#{count} node terminated, AVG: #{computedsum}"
+        #if newcount == numnodes do
+        b = System.system_time(:millisecond)
+        IO.puts "AVG: #{computedsum} Computed, Terminating."
+        send(Process.whereis(:boss),{:sumcomputed,b})   
+        #end
+        {:noreply,{count,numnodes,truesum}}
     end
 
 end

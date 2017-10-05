@@ -30,7 +30,6 @@ defmodule PushsumNode do
           (i == sqn) ->  [String.to_atom("node#{i}@#{j-1}"),String.to_atom("node#{i}@#{j+1}"),String.to_atom("node#{i-1}@#{j}")]#{Integer.undigits([i,j-1]), Integer.undigits([i,j+1]), Integer.undigits([i-1,j])}
           true ->  []
         end
-
         if(top=="imp2D") do
           randi = :rand.uniform(sqn)
           randj = :rand.uniform(sqn)
@@ -38,50 +37,44 @@ defmodule PushsumNode do
         end
        # state: num modes, list of neighbours, last s/w, termination counter, s, w
        #IO.puts "sqn=#{sqn} i=#{i} j=#{j} list=#{inspect(list)}"
-        {:ok,{n, list, 0.0, 0.0, x, 1.0}}
+        {:ok,{n,list,0.0,0,x,1.0}}
     end
 
     def handle_cast({:rumour,s1,w1},{n,list,ratio,t_counter,s,w}) do
-        if (t_counter < 10) do
-            #IO.puts t_counter
+        if (t_counter < 3) do
             s = s + s1
             w = w + w1
             newratio = s/w
-            if  (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) do
+            if  Float.round(abs(ratio-newratio),11) < :math.pow(10.0,-10) do
                 t_counter = t_counter+1
             else
-                t_counter = 0   
+                t_counter = 0    
             end
-
-            #{t_counter,ratio} = cond do
-            #    (ratio != newratio) && (abs(ratio-newratio) < :math.pow(10.0,-10)) -> {t_counter+1,newratio}
-            #    true -> {0,newratio}
-            #end
-            if (t_counter == 10) do
-                GenServer.cast(:pcounter, {:sumreport,s/w})
+            ratio=newratio
+            if (t_counter == 3) do
+                GenServer.cast(:pcounter, {:sumreport,ratio})
             end
             # start spreading the rumour -> cast to self 
-            if (t_counter < 10) do 
+            if (t_counter < 3) do 
                 GenServer.cast(self(), {:spreadrumour})
             end
         end
-        
-    {:noreply,{n,list,newratio,t_counter,s,w}}
+        #IO.puts "Storing ujpdates sate" 
+    {:noreply,{n,list,ratio,t_counter,s,w}}
     end
 
-   def handle_cast({:spreadrumour},{n,list,ratio,t_counter,s,w}) do
-    if t_counter < 10 do
-        len_neb = length(list)
-        name_neb = cond do
-            len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
-            true -> Enum.at(list,(:rand.uniform(len_neb)-1))
-        end
-        GenServer.cast(name_neb, {:rumour, s/2.0,w/2.0})
-        s=s/2.0
-        w=w/2.0
-
-        GenServer.cast(self(), {:spreadrumour})
-    end  
+   def handle_cast({:spreadrumour},{n,list,ratio,t_counter,s,w}) do   #IO.puts "In spread rumor"
+        if t_counter < 3 do
+            len_neb = length(list)
+            name_neb = cond do
+                len_neb == 0 -> String.to_atom("node#{:rand.uniform(n)}")
+                true -> Enum.at(list,(:rand.uniform(len_neb)-1))
+            end
+            s=s/2.0
+            w=w/2.0
+            GenServer.cast(name_neb, {:rumour, s,w})
+            #GenServer.cast(self(), {:spreadrumour})
+        end  
     {:noreply,{n,list,ratio,t_counter,s,w}} 
    end
 end

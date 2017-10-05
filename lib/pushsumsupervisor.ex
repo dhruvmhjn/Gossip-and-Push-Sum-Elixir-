@@ -8,6 +8,6 @@ defmodule PushsumSupervisor do
     def init({n,top}) do
         n_list = Enum.to_list 1..n
         children = Enum.map(n_list, fn(x)->worker(PushsumNode, [top,n,x], [id: "node#{x}"]) end)
-        supervise children, strategy: :one_for_one
+        supervise children, strategy: :one_for_all
     end
 end

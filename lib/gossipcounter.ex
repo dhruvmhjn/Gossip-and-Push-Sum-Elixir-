@@ -8,7 +8,7 @@ defmodule GossipCounter do
     
     def init({numnodes,topology}) do
         if topology == "line" do
-            numnodes = .95 * numnodes
+            numnodes = 0.95 * numnodes
         end
         {:ok,{0,numnodes}}
     end

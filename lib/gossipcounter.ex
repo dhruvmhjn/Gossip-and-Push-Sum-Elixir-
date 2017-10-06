@@ -1,8 +1,8 @@
 defmodule GossipCounter do
     use GenServer
-    def start_link(numnodes) do
+    def start_link(numnodes,topology) do
         myname = String.to_atom("gcounter")
-        return = GenServer.start_link(__MODULE__, {numnodes}, name: myname )
+        return = GenServer.start_link(__MODULE__, {numnodes,topology}, name: myname )
         return
     end
     

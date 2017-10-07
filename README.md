@@ -33,8 +33,8 @@ Imperfect 2D grid: 20,000 (convergence time: 3.07 seconds)
 Algorithm : Push-sum
 Full: 20,000 (convergence time: 14.86 seconds)
 Line: 2,000  (convergence time: 251.51 seconds)
-2D grid: 20,000 (convergence time: 8.27 seconds)
-Imperfect 2D grid: 20,000 (convergence time: 3.07 seconds)
+2D grid: 2,000 (convergence time: 179.93 seconds)
+Imperfect 2D grid: 10,000 (convergence time: 18.11 seconds)
 
 
 References:

@@ -1,8 +1,5 @@
 # Project2
 
-Group members:
-Dhruv Mahajan 4211-1994
-Ashvini Patel 4794-9297
 
 What works: Implemented everything specified in the project brief.
 We have implemented both the Gossip and Push-Sum algorithms for the topologies:
